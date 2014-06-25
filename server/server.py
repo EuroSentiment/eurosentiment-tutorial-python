@@ -8,7 +8,11 @@ sentiment_analyzer = SimpleSentimentAnalyzer()
 @app.route("/sentiment", methods=["POST"])
 def sentiment():
     input = json.loads(request.data)
-    response = input
+    text = input.get("input", "")
+    sentiment = sentiment_analyzer.calculate_sentiment(text)
+    response = {"@context": "http://eurosentiment.eu/contexts/basecontext.jsonld",
+                "@type": "marl:SentimentAnalysis",
+                "marl:polarityValue": sentiment}
     return Response(json.dumps(response), mimetype="application/json")
 
 if __name__ == "__main__":
