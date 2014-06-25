@@ -1,7 +1,10 @@
-from conf.configuration import *
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(__file__), "../conf"))
+
+from configuration import *
 from clients import ResourceClient, ServiceClient
 from sparql_queries import *
-from utils.text_utils import matches_count
+from text_utils import matches_count
 
 class NegativeWordsMatcher:
 

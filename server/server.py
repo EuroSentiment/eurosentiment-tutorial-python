@@ -1,5 +1,8 @@
+import os, sys
+sys.path.append(os.path.join(os.path.dirname(__file__), "../lib"))
+
 from flask import Flask, Response, request
-from lib.simple_sentiment_analyzer import SimpleSentimentAnalyzer
+from simple_sentiment_analyzer import SimpleSentimentAnalyzer
 import json
 
 app = Flask(__name__)
