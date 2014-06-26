@@ -37,7 +37,7 @@ class NegativeWordsMatcher:
         language = lang_result.get("dc:language", None)
         domain_result = self.domain_detector.request({"text": text})
         domain = domain_result["domain"].split(":")[1]
-        query = sparql(POSITIVE_ENTRIES, language, domain)
+        query = sparql(NEGATIVE_ENTRIES, language, domain)
         input = {"query": query,
                  "format": "application/json"}
         resources_result = self.resource_client.request(input)
@@ -47,5 +47,5 @@ class NegativeWordsMatcher:
     def __extract_words_from_response(self, resources_response):
         words = []
         for word in resources_response.get("results", {}).get("bindings", []):
-            words.append(word.get("wordWithSentiment", {}).get("value", None))
+            words.append(word.get("sentimentEntryWR", {}).get("value", None))
         return words

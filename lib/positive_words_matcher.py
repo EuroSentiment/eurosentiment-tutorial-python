@@ -46,9 +46,9 @@ class PositiveWordsMatcher:
         return matches_count(text, sentiment_words)
 
     def __extract_words_from_response(self, resources_response):
-        words = []
+        words = set()
         for word in resources_response.get("results", {}).get("bindings", []):
-            words.append(word.get("wordWithSentiment", {}).get("value", None))
+            words.add(word.get("sentimentEntryWR", {}).get("value", None))
         return words
 
 
