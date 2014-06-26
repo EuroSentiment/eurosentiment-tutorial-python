@@ -29,12 +29,15 @@ class NegativeWordsMatcher:
 
     def __init__(self):
         self.language_detector = ServiceClient(LANG_DETECTION_URL, TOKEN)
+        self.domain_detector = ServiceClient(DOMAIN_DETECTION_URL, TOKEN)
         self.resource_client = ResourceClient(RESOURCES_URL, TOKEN)
 
     def negative_words(self, text):
         lang_result = self.language_detector.request({"text": text})
         language = lang_result.get("dc:language", None)
-        query = ELECTRONICS_NEGATIVE_ENTRIES % language
+        domain_result = self.domain_detector.request({"text": text})
+        domain = domain_result["domain"].split(":")[1]
+        query = sparql(POSITIVE_ENTRIES, language, domain)
         input = {"query": query,
                  "format": "application/json"}
         resources_result = self.resource_client.request(input)

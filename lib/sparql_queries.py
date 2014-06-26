@@ -17,7 +17,16 @@
 #
 #  The original code are licensed under the GNU Lesser General Public License.
 
-ELECTRONICS_POSITIVE_ENTRIES = "PREFIX lemon: <http://lemon-model.net/lemon#> PREFIX marl: <http://purl.org/marl/ns/> SELECT ?wordWithSentiment from <http://www.eurosentiment.eu/dataset/electronics/%s/paradigma/lexicon> 	where { 	?entry lemon:sense ?sense . 	?sense marl:polarityValue ?polarityValue . 	?sense marl:hasPolarity <http://purl.org/marl/ns/positive> . 	?sense lemon:reference ?reference .                  ?entryWithSentiment lemon:sense ?context.                 ?entryWithSentiment lemon:canonicalForm ?cf.                 ?cf lemon:writtenRep ?wordWithSentiment.  	} GROUP BY ?wordWithSentiment"
-ELECTRONICS_NEGATIVE_ENTRIES = "PREFIX lemon: <http://lemon-model.net/lemon#> PREFIX marl: <http://purl.org/marl/ns/> SELECT ?wordWithSentiment from <http://www.eurosentiment.eu/dataset/electronics/%s/paradigma/lexicon> 	where { 	?entry lemon:sense ?sense . 	?sense marl:polarityValue ?polarityValue . 	?sense marl:hasPolarity <http://purl.org/marl/ns/negative> . 	?sense lemon:reference ?reference .                  ?entryWithSentiment lemon:sense ?context.                 ?entryWithSentiment lemon:canonicalForm ?cf.                 ?cf lemon:writtenRep ?wordWithSentiment.  	} GROUP BY ?wordWithSentiment"
-HOTEL_POSITIVE_ENTRIES = "PREFIX lemon: <http://lemon-model.net/lemon#> PREFIX marl: <http://purl.org/marl/ns/> SELECT ?wordWithSentiment from <http://www.eurosentiment.eu/dataset/hotel/%s/paradigma/lexicon> 	where { 	?entry lemon:sense ?sense . 	?sense marl:polarityValue ?polarityValue . 	?sense marl:hasPolarity <http://purl.org/marl/ns/positive> . 	?sense lemon:reference ?reference .                  ?entryWithSentiment lemon:sense ?context.                 ?entryWithSentiment lemon:canonicalForm ?cf.                 ?cf lemon:writtenRep ?wordWithSentiment.  	} GROUP BY ?wordWithSentiment"
-HOTEL_NEGATIVE_ENTRIES = "PREFIX lemon: <http://lemon-model.net/lemon#> PREFIX marl: <http://purl.org/marl/ns/> SELECT ?wordWithSentiment from <http://www.eurosentiment.eu/dataset/hotel/%s/paradigma/lexicon> 	where { 	?entry lemon:sense ?sense . 	?sense marl:polarityValue ?polarityValue . 	?sense marl:hasPolarity <http://purl.org/marl/ns/negative> . 	?sense lemon:reference ?reference .                  ?entryWithSentiment lemon:sense ?context.                 ?entryWithSentiment lemon:canonicalForm ?cf.                 ?cf lemon:writtenRep ?wordWithSentiment.  	} GROUP BY ?wordWithSentiment"
+POSITIVE_ENTRIES = "PREFIX lemon: <http://lemon-model.net/lemon#> PREFIX marl: <http://purl.org/marl/ns/> SELECT DISTINCT ?wordWithSentiment ?polarityValue ?sentimentEntry from <%s> where { ?sentimentEntry lemon:sense ?sense . ?sense marl:polarityValue ?polarityValue . ?sense marl:hasPolarity <http://purl.org/marl/ns/positive> . ?sense lemon:reference ?reference . ?sense lemon:context ?context . ?entryWithSentiment lemon:sense ?context . ?entryWithSentiment lemon:canonicalForm ?cf . ?cf lemon:writtenRep ?wordWithSentiment . }"
+NEGATIVE_ENTRIES = "PREFIX lemon: <http://lemon-model.net/lemon#> PREFIX marl: <http://purl.org/marl/ns/> SELECT DISTINCT ?wordWithSentiment ?polarityValue ?sentimentEntry from <%s> where { ?sentimentEntry lemon:sense ?sense . ?sense marl:polarityValue ?polarityValue . ?sense marl:hasPolarity <http://purl.org/marl/ns/negative> . ?sense lemon:reference ?reference . ?sense lemon:context ?context . ?entryWithSentiment lemon:sense ?context . ?entryWithSentiment lemon:canonicalForm ?cf . ?cf lemon:writtenRep ?wordWithSentiment . }"
+
+PREFIXES = {"en": {"electronics": "gabvul/2",
+                   "hotel": "gabvul/8"},
+            "es": {"electronics": "gabvul/3",
+                   "hotel": "gabvul/9"}}
+
+def __build_graph_uri(language, domain):
+    return "http://www.eurosentiment.eu/dataset/%s/%s/%s/lexicon" % (domain, language, PREFIXES[language][domain])
+
+def sparql(query, language, domain):
+    return query % __build_graph_uri(language, domain)
