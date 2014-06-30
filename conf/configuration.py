@@ -19,6 +19,6 @@
 
 TOKEN = 'YOUR_EUROSENTIMENT_TOKEN_HERE'
 
-LANG_DETECTION_URL = 'http://54.187.254.3/services/language_detector'
+LANG_DETECTION_URL = 'http://217.26.90.243:8080/EuroSentimentServices/services/server/access/sptdl0407'
 DOMAIN_DETECTION_URL = 'http://217.26.90.243:8080/EuroSentimentServices/services/server/access/710e9337-7024-4205-a8f4-376724b867f7'
 RESOURCES_URL = 'http://54.201.101.125/sparql/'
